@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Agendamento</title>
+</h:head>
+
+<h:body>
+	<h3>Espaços Físicos cadastrados</h3>
+	
+	<p:dataTable id="tabelaEspacoFisico" var="espacoFisico" value="#{espacoFisicoController.listaEspacoFisico}">
+	    <p:column headerText="Id">
+	        <h:outputText value="#{espacoFisico.id}" />
+	    </p:column>
+	 
+    	<p:column headerText="Year">
+        	<h:outputText value="#{espacoFisico.descricao}" />
+    	</p:column>
+    </p:dataTable>
+	
+	<hr/>
+	
+	<h3>Cadastro de Espaço Físico</h3>
+	<h:form id="formCadastro" prependId="false">
+	
+		<p:growl id="mensagens" showDetail="true" sticky="true" />  
+	
+		<h:outputLabel for="descricao" value="Descrição: " />
+		
+		<p:inputText id="nome" value="#{espacoFisico.descricao}" />
+
+		<br />
+		<br />
+
+		<p:commandButton value="Cadastrar" actionListener="#{espacoFisicoController.cadastrar}" update="mensagens tabelaEspacoFisico" />
+		
+	</h:form>
+
+</h:body>
+
+</html>
