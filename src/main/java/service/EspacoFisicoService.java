@@ -20,4 +20,9 @@ public class EspacoFisicoService {
 		Query query = entityManager.createQuery("SELECT ef FROM EspacoFisico ef");
 		return (List<EspacoFisico>) query.getResultList(); 
 	}
+	
+	public void save(EspacoFisico espacoFisico) {
+		entityManager.persist(espacoFisico);
+	}
+	
 }

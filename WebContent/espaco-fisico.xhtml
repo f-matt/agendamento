@@ -28,11 +28,12 @@
 	<h3>Cadastro de Espaço Físico</h3>
 	<h:form id="formCadastro" prependId="false">
 	
-		<p:growl id="mensagens" showDetail="true" sticky="true" />  
+		<p:growl id="mensagens" showDetail="false" sticky="false" />  
 	
 		<h:outputLabel for="descricao" value="Descrição: " />
 		
-		<p:inputText id="nome" value="#{espacoFisico.descricao}" />
+		<p:inputText id="nome" value="#{espacoFisicoController.espacoFisico.descricao}" />
+
 
 		<br />
 		<br />

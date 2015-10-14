@@ -32,7 +32,7 @@ public class EspacoFisico {
 	}
 
 	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+		this.descricao = descricao.toUpperCase();
 	}
 	
 }
