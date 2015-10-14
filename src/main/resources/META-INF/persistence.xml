@@ -5,7 +5,7 @@
         http://java.sun.com/xml/ns/persistence
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
         
-    <!-- Persistence unit: agendamento -->
+   <!-- Persistence unit: agendamento -->
    <persistence-unit name="agendamentoPU">
      <jta-data-source>jdbc/agendamento</jta-data-source>
       <properties>
