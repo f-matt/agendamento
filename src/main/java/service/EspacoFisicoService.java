@@ -17,12 +17,19 @@ public class EspacoFisicoService {
 	
 	@SuppressWarnings("unchecked")
 	public List<EspacoFisico> getAll() {
-		Query query = entityManager.createQuery("SELECT ef FROM EspacoFisico ef");
+		Query query = entityManager.createQuery("SELECT ef FROM EspacoFisico ef ORDER BY ef.id");
 		return (List<EspacoFisico>) query.getResultList(); 
 	}
 	
 	public void save(EspacoFisico espacoFisico) {
-		entityManager.persist(espacoFisico);
+		if (espacoFisico.getId() == null)
+			entityManager.persist(espacoFisico);
+		else
+			entityManager.merge(espacoFisico);
+	}
+	
+	public void remove(EspacoFisico espacoFisico) {
+		entityManager.remove(entityManager.merge(espacoFisico));
 	}
 	
 }

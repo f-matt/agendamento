@@ -13,32 +13,53 @@
 <h:body>
 	<h3>Espaços Físicos cadastrados</h3>
 	
-	<p:dataTable id="tabelaEspacoFisico" var="espacoFisico" value="#{espacoFisicoController.listaEspacoFisico}">
-	    <p:column headerText="Id">
-	        <h:outputText value="#{espacoFisico.id}" />
-	    </p:column>
-	 
-    	<p:column headerText="Year">
-        	<h:outputText value="#{espacoFisico.descricao}" />
-    	</p:column>
-    </p:dataTable>
-	
-	<hr/>
-	
-	<h3>Cadastro de Espaço Físico</h3>
 	<h:form id="formCadastro" prependId="false">
 	
 		<p:growl id="mensagens" showDetail="false" sticky="false" />  
 	
+		<p:dataTable id="tabelaEspacoFisico" var="espacoFisico" value="#{espacoFisicoController.listaEspacoFisico}"
+			selectionMode="single" selection="#{espacoFisicoController.espacoFisicoSelecionado}" rowKey="#{espacoFisico.id}">
+		    <p:column headerText="Id">
+		        <h:outputText value="#{espacoFisico.id}" />
+		    </p:column>
+		 
+	    	<p:column headerText="Descrição">
+	        	<h:outputText value="#{espacoFisico.descricao}" />
+	    	</p:column>
+	    	 <f:facet name="footer">
+	            <p:commandButton process="tabelaEspacoFisico" update="formCadastro" 
+	            	icon="ui-icon-pencil" value="Editar" actionListener="#{espacoFisicoController.preparaAtualizar}" />
+            	<p:commandButton process="tabelaEspacoFisico" update="formCadastro"
+            	  	icon="ui-icon-trash" value="Remover" actionListener="#{espacoFisicoController.remove}">
+           	  		<p:confirm header="Confirmação" message="Tem certeza?" icon="ui-icon-alert" />
+           	  	</p:commandButton>
+	        </f:facet>
+	    </p:dataTable>
+	
+		<hr/>
+	
+		<h3>Cadastro de Espaço Físico</h3>
+	
+	
+		<h:outputLabel for="id" value="Id: " />
+		<p:inputText id="id" value="#{espacoFisicoController.espacoFisico.id}" readonly="true" />
+		<br/>
+		<br/>
+	
 		<h:outputLabel for="descricao" value="Descrição: " />
-		
 		<p:inputText id="nome" value="#{espacoFisicoController.espacoFisico.descricao}" />
+		<br/>
+		<br/>
 
-
-		<br />
-		<br />
-
-		<p:commandButton value="Cadastrar" actionListener="#{espacoFisicoController.cadastrar}" update="mensagens tabelaEspacoFisico" />
+		<p:commandButton value="#{espacoFisicoController.buttonValue}" actionListener="#{espacoFisicoController.salvar}"
+			update="mensagens tabelaEspacoFisico" />
+		
+		<p:commandButton value="Limpar" actionListener="#{espacoFisicoController.limpar}" update="mensagens formCadastro" />
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+       		<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	</p:confirmDialog>
 		
 	</h:form>
 

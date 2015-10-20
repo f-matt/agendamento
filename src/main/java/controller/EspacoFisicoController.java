@@ -6,12 +6,14 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import model.EspacoFisico;
 import service.EspacoFisicoService;
 
 @ManagedBean
+@ViewScoped
 public class EspacoFisicoController {
 	
 	@EJB
@@ -21,7 +23,11 @@ public class EspacoFisicoController {
 	
 	private EspacoFisico espacoFisico;
 	
+	private EspacoFisico espacoFisicoSelecionado;
+	
 	private String mensagem = "espaco fisico";
+	
+	private String buttonValue = "Cadastrar";
 	
 	@PostConstruct
     public void init() {
@@ -29,11 +35,27 @@ public class EspacoFisicoController {
 		this.listaEspacoFisico = espacoFisicoService.getAll();
 	}
 	
-	public void cadastrar() {
+	public void salvar() {
 		espacoFisicoService.save(espacoFisico);
 		listaEspacoFisico = espacoFisicoService.getAll();
 		FacesContext.getCurrentInstance().addMessage(null, 
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro cadastrado com sucesso!", null));
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro cadastrado/atualizado com sucesso!", null));
+	}
+	
+	public void preparaAtualizar() {
+		buttonValue = "Atualizar";
+		this.espacoFisico = this.espacoFisicoSelecionado;
+	}
+	
+	public void remove() {
+		System.out.println("remover");
+		espacoFisicoService.remove(espacoFisicoSelecionado);
+		listaEspacoFisico = espacoFisicoService.getAll();
+	}
+	
+	public void limpar() {
+		this.buttonValue = "Cadastrar";
+		this.espacoFisico = new EspacoFisico();
 	}
 
 	public String getMensagem() {
@@ -66,6 +88,22 @@ public class EspacoFisicoController {
 
 	public void setEspacoFisico(EspacoFisico espacoFisico) {
 		this.espacoFisico = espacoFisico;
+	}
+
+	public EspacoFisico getEspacoFisicoSelecionado() {
+		return espacoFisicoSelecionado;
+	}
+
+	public void setEspacoFisicoSelecionado(EspacoFisico espacoFisicoSelecionado) {
+		this.espacoFisicoSelecionado = espacoFisicoSelecionado;
+	}
+
+	public String getButtonValue() {
+		return buttonValue;
+	}
+
+	public void setButtonValue(String buttonValue) {
+		this.buttonValue = buttonValue;
 	}
 	
 }
