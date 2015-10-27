@@ -18,9 +18,19 @@ PrimeFaces.locales['pt-br'] = {
     hourText: 'Hora',
     minuteText: 'Minuto',
     secondText: 'Segundo',
-    ampm: true,
+    ampm: false,
     month: 'Mês',
     week: 'Semana',
     day: 'Dia',
     allDayText : 'Todo o Dia'
+};
+PrimeFaces.widget.Schedule.prototype._oldInit = PrimeFaces.widget.Schedule.prototype.init;
+PrimeFaces.widget.Schedule.prototype.init = function (cfg){
+        cfg.columnFormat = {
+             month: 'ddd',
+             week: 'ddd D/M',
+             day: 'dddd'
+        };
+
+    this._oldInit.apply(this, arguments);
 };
