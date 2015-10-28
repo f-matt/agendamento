@@ -36,9 +36,6 @@ public class AgendaController implements Serializable {
     	try {
 	    	formatador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	        eventModel = new DefaultScheduleModel();
-	        eventModel.addEvent(new DefaultScheduleEvent("Curso: Dev. Web em Java", formatador.parse("27/10/2015 16:00"), formatador.parse("27/10/2015 17:00")));
-	        eventModel.addEvent(new DefaultScheduleEvent("Curso: Dev. Web em Java", formatador.parse("28/10/2015 16:00"), formatador.parse("28/10/2015 17:00")));
-	        eventModel.addEvent(new DefaultScheduleEvent("Reunião: Ebserh", formatador.parse("29/10/2015 10:00"), formatador.parse("29/10/2015 12:00")));
     	} catch (Exception ex) {
     		ex.printStackTrace();
     	}
@@ -71,6 +68,7 @@ public class AgendaController implements Serializable {
      
     public void onDateSelect(SelectEvent selectEvent) {
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+        System.out.println(selectEvent.getObject());
     }
      
     public void onEventMove(ScheduleEntryMoveEvent event) {

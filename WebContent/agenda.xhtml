@@ -19,7 +19,7 @@
         	<h3>Agenda</h3>
  
      		<p:schedule id="schedule" value="#{agendaController.eventModel}" widgetVar="myschedule" 
-        				timeZone="GMT-2" locale="pt-br" axisFormat="H:mm" timeFormat="H:mm">
+        			locale="pt-br" axisFormat="H:mm" timeFormat="H:mm"  timeZone="America/Noronha">
  
 				<p:ajax event="dateSelect" listener="#{agendaController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
 	            <p:ajax event="eventSelect" listener="#{agendaController.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
@@ -36,10 +36,10 @@
             	<p:inputText id="title" value="#{agendaController.event.title}" required="true" />
  
             	<p:outputLabel for="from" value="De:" />
-            	<p:calendar id="from" value="#{agendaController.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+            	<p:calendar id="from" value="#{agendaController.event.startDate}" pattern="dd/MM/yyyy HH:mm"/>
  
             	<p:outputLabel for="to" value="Até:" />
-            	<p:calendar id="to" value="#{agendaController.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+            	<p:calendar id="to" value="#{agendaController.event.endDate}" pattern="dd/MM/yyyy HH:mm"/>
  
             	<p:outputLabel for="allDay" value="Todo o dia:" />
             	<h:selectBooleanCheckbox id="allDay" value="#{agendaController.event.allDay}" />
