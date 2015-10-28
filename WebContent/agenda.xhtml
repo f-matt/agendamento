@@ -19,7 +19,8 @@
         	<h3>Agenda</h3>
  
      		<p:schedule id="schedule" value="#{agendaController.eventModel}" widgetVar="myschedule" 
-        			locale="pt-br" axisFormat="H:mm" timeFormat="H:mm"  timeZone="America/Noronha">
+        			locale="pt-br" axisFormat="H:mm" timeFormat="H:mm"  
+        			timeZone="#{agendaController.timezone}" >
  
 				<p:ajax event="dateSelect" listener="#{agendaController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
 	            <p:ajax event="eventSelect" listener="#{agendaController.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
