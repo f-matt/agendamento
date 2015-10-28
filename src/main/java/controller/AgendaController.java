@@ -13,8 +13,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import model.Evento;
-
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -22,8 +20,7 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-import org.primefaces.model.DefaultScheduleEvent;
-
+import model.Evento;
 import service.EventoService;
 
 @ManagedBean
@@ -69,17 +66,12 @@ public class AgendaController implements Serializable {
 	}
 
 	public void addEvent(ActionEvent actionEvent) {
-		System.out.println("addevent");
-		System.out.println("event: " + evento.getId());
 		if (evento.getId() == null) {
-			System.out.println("id = null");
 			eventModel.addEvent(evento);
 			eventoService.save(evento);
-			System.out.println("save: " + evento);
 			FacesContext.getCurrentInstance().addMessage(null, 
 					new FacesMessage(FacesMessage.SEVERITY_INFO, null, "Evento salvo com sucesso!"));
 		} else {
-			System.out.println("update");
 			eventModel.updateEvent(evento);
 		}
 		evento = new Evento();
