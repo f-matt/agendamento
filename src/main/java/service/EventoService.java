@@ -37,5 +37,6 @@ public class EventoService {
 	public String getTimeZone() {
 		return "Etc/GMT+2";
 	}
+	
 
 }

@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -73,12 +75,14 @@ public class AgendaController implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_INFO, null, "Evento salvo com sucesso!"));
 		} else {
 			eventModel.updateEvent(evento);
+			eventoService.save(evento);
 		}
 		evento = new Evento();
 	}
 
 	public void onEventSelect(SelectEvent selectEvent) {
 		evento = (ScheduleEvent) selectEvent.getObject();
+		System.out.println("Evento: " + evento);
 	}
 
 	public void onDateSelect(SelectEvent selectEvent) {
@@ -87,10 +91,30 @@ public class AgendaController implements Serializable {
 	}
 
 	public void onEventMove(ScheduleEntryMoveEvent event) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Data alterada", event.getDayDelta() + " dias, " + event.getMinuteDelta()
-				+ "minutos");
-
-		addMessage(message);
+		Date dtInicio = event.getScheduleEvent().getStartDate();
+		Date dtFim = event.getScheduleEvent().getEndDate();
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(dtInicio);
+		
+		cal.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
+		cal.add(Calendar.MINUTE, event.getMinuteDelta());
+		
+		Date novaDtInicio = cal.getTime();
+		
+		cal.setTime(dtFim);
+		
+		cal.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
+		cal.add(Calendar.MINUTE, event.getMinuteDelta());
+		
+		Date novaDtFim = cal.getTime();
+		
+		Evento evento = (Evento) event.getScheduleEvent();
+		
+		evento.setStartDate(novaDtInicio);
+		evento.setEndDate(novaDtFim);		
+		
+		eventoService.save(evento);
 	}
 
 	public void onEventResize(ScheduleEntryResizeEvent event) {
