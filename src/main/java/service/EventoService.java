@@ -26,8 +26,17 @@ public class EventoService {
 	public void save(ScheduleEvent evento) {
 		if (evento.getId() == null)
 			entityManager.persist((Evento) evento);
-		else
-			entityManager.merge((Evento) evento);
+		else {
+			Evento e = (Evento) evento;
+			System.out.println("service: " + e.getStartDate());
+			
+			Evento e1 = entityManager.find(Evento.class, e.getIdDb());
+			System.out.println("service (banco): " + e1.getStartDate());
+			
+			entityManager.merge(e);
+			entityManager.flush();
+			System.out.println("service: " + e.getStartDate());
+		}
 	}
 
 	public void remove(ScheduleEvent evento) {

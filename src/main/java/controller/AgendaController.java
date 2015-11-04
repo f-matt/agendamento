@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -15,6 +13,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import model.Evento;
+
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -22,7 +22,6 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-import model.Evento;
 import service.EventoService;
 
 @ManagedBean
@@ -50,6 +49,10 @@ public class AgendaController implements Serializable {
 		List<ScheduleEvent> listaEventos = eventoService.getAll();
 
 		for (ScheduleEvent se : listaEventos) {
+			
+			System.out.println("init evento start:" + se.getStartDate());
+			System.out.println("init evento end:" + se.getEndDate());
+			
 			eventModel.addEvent(se);
 		}
 
@@ -91,28 +94,14 @@ public class AgendaController implements Serializable {
 	}
 
 	public void onEventMove(ScheduleEntryMoveEvent event) {
+		
 		Date dtInicio = event.getScheduleEvent().getStartDate();
 		Date dtFim = event.getScheduleEvent().getEndDate();
 		
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(dtInicio);
+		System.out.println("dtInicio: " + dtInicio);
+		System.out.println("dtFim: " + dtFim);
 		
-		cal.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
-		cal.add(Calendar.MINUTE, event.getMinuteDelta());
-		
-		Date novaDtInicio = cal.getTime();
-		
-		cal.setTime(dtFim);
-		
-		cal.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
-		cal.add(Calendar.MINUTE, event.getMinuteDelta());
-		
-		Date novaDtFim = cal.getTime();
-		
-		Evento evento = (Evento) event.getScheduleEvent();
-		
-		evento.setStartDate(novaDtInicio);
-		evento.setEndDate(novaDtFim);		
+		evento = event.getScheduleEvent();
 		
 		eventoService.save(evento);
 	}
