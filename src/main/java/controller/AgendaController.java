@@ -49,10 +49,6 @@ public class AgendaController implements Serializable {
 		List<ScheduleEvent> listaEventos = eventoService.getAll();
 
 		for (ScheduleEvent se : listaEventos) {
-			
-			System.out.println("init evento start:" + se.getStartDate());
-			System.out.println("init evento end:" + se.getEndDate());
-			
 			eventModel.addEvent(se);
 		}
 
@@ -85,25 +81,15 @@ public class AgendaController implements Serializable {
 
 	public void onEventSelect(SelectEvent selectEvent) {
 		evento = (ScheduleEvent) selectEvent.getObject();
-		System.out.println("Evento: " + evento);
 	}
 
 	public void onDateSelect(SelectEvent selectEvent) {
 		evento = new Evento("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-		System.out.println("Evento: " + evento);
 	}
 
 	public void onEventMove(ScheduleEntryMoveEvent event) {
-		
-		Date dtInicio = event.getScheduleEvent().getStartDate();
-		Date dtFim = event.getScheduleEvent().getEndDate();
-		
-		System.out.println("dtInicio: " + dtInicio);
-		System.out.println("dtFim: " + dtFim);
-		
-		evento = event.getScheduleEvent();
-		
-		eventoService.save(evento);
+		Evento ev = (Evento) event.getScheduleEvent();
+		eventoService.save(ev);
 	}
 
 	public void onEventResize(ScheduleEntryResizeEvent event) {

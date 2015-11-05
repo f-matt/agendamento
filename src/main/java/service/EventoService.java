@@ -29,13 +29,10 @@ public class EventoService {
 		else {
 			Evento e = (Evento) evento;
 			System.out.println("service: " + e.getStartDate());
-			
-			Evento e1 = entityManager.find(Evento.class, e.getIdDb());
-			System.out.println("service (banco): " + e1.getStartDate());
-			
+			System.out.println("service: " + e.getEndDate());
+
 			entityManager.merge(e);
-			entityManager.flush();
-			System.out.println("service: " + e.getStartDate());
+			
 		}
 	}
 
@@ -45,6 +42,10 @@ public class EventoService {
 	
 	public String getTimeZone() {
 		return "Etc/GMT+2";
+	}
+	
+	public ScheduleEvent find(Long id) {
+		return entityManager.find(Evento.class, id);
 	}
 	
 

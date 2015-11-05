@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0"
-   xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
         http://java.sun.com/xml/ns/persistence
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-        
-   <!-- Persistence unit: agendamento -->
-   <persistence-unit name="agendamentoPU">
-     <jta-data-source>jdbc/agendamento</jta-data-source>
-      <properties>
-          <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-      		<property name="hibernate.show_sql" value="false"/>
-            <property name="hibernate.connection.charSet" value="UTF-8"/>
-      </properties>
-   </persistence-unit>
-  
+
+	<!-- Persistence unit: agendamento -->
+	<persistence-unit name="agendamentoPU">
+		<jta-data-source>jdbc/agendamento</jta-data-source>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.connection.charSet" value="UTF-8" />
+			
+			<!-- Habilita o update de campos tipo Date (@Temporal) -->
+			<property name="eclipselink.temporal.mutable" value="true" />
+			
+		</properties>
+	</persistence-unit>
+
 </persistence>
