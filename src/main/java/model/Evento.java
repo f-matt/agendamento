@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,6 +48,10 @@ public class Evento implements ScheduleEvent, Serializable {
 	@Column(name = "description")
 	private String description;
 	
+	@ManyToOne
+	@JoinColumn(name = "espaco_fisico_id")
+	private EspacoFisico espacoFisico;
+	
 	@Transient
 	private String styleClass;
 	
@@ -54,16 +60,22 @@ public class Evento implements ScheduleEvent, Serializable {
     
 	@Transient
 	private boolean editable = true;
-    
+	
 	public Evento() { 
 		this.id = null;
 	}
+    
+	public Evento(EspacoFisico espacoFisico) { 
+		this.id = null;
+		this.espacoFisico = espacoFisico;
+	}
 	
-	public Evento(String title, Date startDate, Date endDate) {
+	public Evento(String title, Date startDate, Date endDate, EspacoFisico espacoFisico) {
 		this.id = null;
 		this.title = title;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.espacoFisico = espacoFisico;
 	}
 	
 	@Override
@@ -142,6 +154,14 @@ public class Evento implements ScheduleEvent, Serializable {
 
 	public void setIdDb(Long idDb) {
 		this.idDb = idDb;
+	}
+	
+	public EspacoFisico getEspacoFisico() {
+		return espacoFisico;
+	}
+
+	public void setEspacoFisico(EspacoFisico espacoFisico) {
+		this.espacoFisico = espacoFisico;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ CREATE TABLE espaco_fisico (
 CREATE TABLE eventos (
 	id SERIAL PRIMARY KEY,
 	id_schedule VARCHAR(50),
+	espaco_fisico_id INTEGER REFERENCES espaco_fisico(id),
 	title VARCHAR(50),
 	start_date TIMESTAMP,
 	end_date TIMESTAMP,
@@ -21,7 +22,3 @@ INSERT INTO espaco_fisico (descricao) VALUES
 ('SALA DE VIDEOCONFERÊNCIA 1'),
 ('SALA DE VIDEOCONFERÊNCIA 2'),
 ('SALA DE VIDEOCONFERÊNCIA 3');
-
-
-
-

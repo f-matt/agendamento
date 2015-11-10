@@ -16,7 +16,7 @@
  
     	<h:panelGrid columnClasses="value">
     	
-        	<h3>Agenda</h3>
+        	<h3>Agenda: #{agendaController.espacoFisico.descricao}</h3>
  
      		<p:schedule id="schedule" value="#{agendaController.eventModel}" widgetVar="myschedule" 
         			locale="pt-br" axisFormat="H:mm" timeFormat="H:mm"  

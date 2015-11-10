@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import model.EspacoFisico;
 import model.Evento;
 
 import org.primefaces.model.ScheduleEvent;
@@ -18,8 +19,9 @@ public class EventoService {
 	private EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")
-	public List<ScheduleEvent> getAll() {
-		Query query = entityManager.createQuery("SELECT e FROM Evento e");
+	public List<ScheduleEvent> getAll(EspacoFisico espacoFisico) {
+		Query query = entityManager.createQuery("SELECT e FROM Evento e WHERE e.espacoFisico.id = :id");
+		query.setParameter("id", espacoFisico.getId());
 		return (List<ScheduleEvent>) query.getResultList();
 	}
 

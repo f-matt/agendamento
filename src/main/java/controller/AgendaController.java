@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -9,10 +10,13 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 
+import model.EspacoFisico;
 import model.Evento;
 
 import org.primefaces.event.ScheduleEntryMoveEvent;
@@ -30,26 +34,42 @@ public class AgendaController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@EJB
+	private EventoService eventoService;
+	
+	@ManagedProperty(value = "#{espacoFisicoController.espacoFisicoSelecionado}")
+	private EspacoFisico espacoFisico;
+
 	private ScheduleModel eventModel;
 
-	private ScheduleEvent evento = new Evento();
+	private ScheduleEvent evento = new Evento(espacoFisico);
 
 	private TimeZone timezone;
 
-	@EJB
-	private EventoService eventoService;
-
 	@PostConstruct
 	public void init() {
-		// Busca o timezone do banco
-		timezone = TimeZone.getTimeZone(eventoService.getTimeZone());
 		
-		// Cria o modelo de eventos
-		eventModel = new DefaultScheduleModel();
-		List<ScheduleEvent> listaEventos = eventoService.getAll();
+		if (espacoFisico == null) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			HttpServletRequest origRequest = (HttpServletRequest) context.getExternalContext().getRequest();
+			String contextPath = origRequest.getContextPath();
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/espaco-fisico.xhtml");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+		
+			// Busca o timezone do banco
+			timezone = TimeZone.getTimeZone(eventoService.getTimeZone());
+		
+			// Cria o modelo de eventos
+			eventModel = new DefaultScheduleModel();
+			List<ScheduleEvent> listaEventos = eventoService.getAll(espacoFisico);
 
-		for (ScheduleEvent se : listaEventos) {
-			eventModel.addEvent(se);
+			for (ScheduleEvent se : listaEventos) {
+				eventModel.addEvent(se);
+			}
 		}
 
 	}
@@ -76,7 +96,7 @@ public class AgendaController implements Serializable {
 			eventModel.updateEvent(evento);
 			eventoService.save(evento);
 		}
-		evento = new Evento();
+		evento = new Evento(espacoFisico);
 	}
 
 	public void onEventSelect(SelectEvent selectEvent) {
@@ -84,7 +104,7 @@ public class AgendaController implements Serializable {
 	}
 
 	public void onDateSelect(SelectEvent selectEvent) {
-		evento = new Evento("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+		evento = new Evento("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), espacoFisico);
 	}
 
 	public void onEventMove(ScheduleEntryMoveEvent event) {
@@ -111,4 +131,14 @@ public class AgendaController implements Serializable {
 		this.timezone = timezone;
 	}
 
+	public EspacoFisico getEspacoFisico() {
+		return espacoFisico;
+	}
+
+	public void setEspacoFisico(EspacoFisico espacoFisico) {
+		this.espacoFisico = espacoFisico;
+	}
+	
+	
+	
 }

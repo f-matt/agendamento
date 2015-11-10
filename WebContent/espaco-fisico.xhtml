@@ -26,9 +26,11 @@
 	    	<p:column headerText="Descrição">
 	        	<h:outputText value="#{espacoFisico.descricao}" />
 	    	</p:column>
-	    	 <f:facet name="footer">
+	    	
+   			<f:facet name="footer">
 	            <p:commandButton process="tabelaEspacoFisico" update="formCadastro" 
 	            	icon="ui-icon-pencil" value="Editar" actionListener="#{espacoFisicoController.preparaAtualizar}" />
+           		<p:commandButton icon="ui-icon-pencil" value="Visualizar Agenda" actionListener="#{espacoFisicoController.preparaAgenda}" />
             	<p:commandButton process="tabelaEspacoFisico" update="formCadastro"
             	  	icon="ui-icon-trash" value="Remover" actionListener="#{espacoFisicoController.remove}">
            	  		<p:confirm header="Confirmação" message="Tem certeza?" icon="ui-icon-alert" />

@@ -16,24 +16,6 @@
 	<p><a href="espaco-fisico.xhtml">Cadastro de Espaço Físico</a></p>
 	<p><a href="usuario.xhtml">Cadastro de Usuarios</a></p>
 
-	<h:form id="formOla" prependId="false">
-		<h:outputLabel for="nome" value="Nome:" />
-		<p:inputText id="nome" value="#{indexController.nome}" />
-
-		<br />
-		<br />
-
-		<p:commandButton value="Olá!" actionListener="#{indexController.dizOla}" update="mensagens" />
-		
-	</h:form>
-
-	<br/>
-	<br/>
-	<h2>Saída:</h2>
-	<p:outputPanel id="mensagens">
-		${indexController.mensagem}
-	</p:outputPanel>
-
 </h:body>
 
 </html>
