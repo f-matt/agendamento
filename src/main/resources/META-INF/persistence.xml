@@ -10,7 +10,8 @@
 		<jta-data-source>jdbc/agendamento</jta-data-source>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.connection.charSet" value="UTF-8" />
 			
 			<!-- Habilita o update de campos tipo Date (@Temporal) -->

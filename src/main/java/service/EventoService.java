@@ -1,5 +1,6 @@
 package service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -17,6 +18,9 @@ public class EventoService {
 
 	@PersistenceContext(unitName = "agendamentoPU")
 	private EntityManager entityManager;
+	
+	 @PersistenceContext
+	 private EntityManager em;
 
 	@SuppressWarnings("unchecked")
 	public List<ScheduleEvent> getAll(EspacoFisico espacoFisico) {
@@ -46,6 +50,20 @@ public class EventoService {
 	
 	public ScheduleEvent find(Long id) {
 		return entityManager.find(Evento.class, id);
+	}
+
+	public boolean findDate(Date startDate, Date endDate) {
+		Query query = em.createQuery("SELECT e from Evento e WHERE :start BETWEEN e.startDate AND e.endDate");
+		query.setParameter("start", startDate);
+		//query.setParameter("end", endDate);
+		List<Evento> lista = query.getResultList();
+		System.out.println(lista.size());
+		if (lista.size() > 0){
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 	
 
