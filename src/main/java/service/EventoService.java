@@ -26,16 +26,14 @@ public class EventoService {
 	}
 
 	public void save(ScheduleEvent evento) {
+		
 		if (evento.getId() == null)
-			entityManager.persist((Evento) evento);
+			entityManager.persist(evento);
 		else {
-			Evento e = (Evento) evento;
-			System.out.println("service: " + e.getStartDate());
-			System.out.println("service: " + e.getEndDate());
-
-			entityManager.merge(e);
-			
+			entityManager.merge(evento);
 		}
+		
+		entityManager.flush();
 	}
 
 	public void remove(ScheduleEvent evento) {

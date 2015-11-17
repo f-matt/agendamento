@@ -98,6 +98,11 @@ public class AgendaController implements Serializable {
 		}
 		evento = new Evento(espacoFisico);
 	}
+	
+	public void removeEvent() {
+		eventModel.deleteEvent(evento);
+		eventoService.remove(evento);
+	}
 
 	public void onEventSelect(SelectEvent selectEvent) {
 		evento = (ScheduleEvent) selectEvent.getObject();
@@ -110,6 +115,7 @@ public class AgendaController implements Serializable {
 	public void onEventMove(ScheduleEntryMoveEvent event) {
 		Evento ev = (Evento) event.getScheduleEvent();
 		eventoService.save(ev);
+		eventModel.updateEvent(ev);
 	}
 
 	public void onEventResize(ScheduleEntryResizeEvent event) {
@@ -138,7 +144,5 @@ public class AgendaController implements Serializable {
 	public void setEspacoFisico(EspacoFisico espacoFisico) {
 		this.espacoFisico = espacoFisico;
 	}
-	
-	
 	
 }
