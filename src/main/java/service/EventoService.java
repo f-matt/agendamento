@@ -18,6 +18,9 @@ public class EventoService {
 
 	@PersistenceContext(unitName = "agendamentoPU")
 	private EntityManager entityManager;
+	
+	 @PersistenceContext
+	 private EntityManager em;
 
 	@SuppressWarnings("unchecked")
 	public List<ScheduleEvent> getAll(EspacoFisico espacoFisico) {
@@ -60,6 +63,7 @@ public class EventoService {
 	}
 
 	public boolean findDate(Date startDate, Date endDate) {
+
 		Query query = entityManager.createQuery("SELECT e from Evento e WHERE :start BETWEEN e.startDate AND e.endDate");
 		query.setParameter("start", startDate);
 		//query.setParameter("end", endDate);

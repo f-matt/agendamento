@@ -86,17 +86,22 @@ public class AgendaController implements Serializable {
 		this.evento = event;
 	}
 
-	public void addEvent(ActionEvent actionEvent) {
-		if (evento.getId() == null) {
-			eventModel.addEvent(evento);
-			eventoService.save(evento);
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage(FacesMessage.SEVERITY_INFO, null, "Evento salvo com sucesso!"));
-		} else {
-			eventModel.updateEvent(evento);
-			eventoService.save(evento);
+	public void addEvent(ActionEvent actionEvent) {	
+		if(eventoService.findDate(evento.getStartDate(),evento.getEndDate())){
+			if (evento.getId() == null) {
+				eventModel.addEvent(evento);
+				eventoService.save(evento);
+				FacesContext.getCurrentInstance().addMessage(null, 
+						new FacesMessage(FacesMessage.SEVERITY_INFO, null, "Evento salvo com sucesso!"));
+			} else {
+				eventModel.updateEvent(evento);
+				eventoService.save(evento);
+			}
+			evento = new Evento(espacoFisico);
 		}
-		evento = new Evento(espacoFisico);
+		else{
+			System.out.println("FALSE");
+		}
 	}
 	
 	public void removeEvent() {
@@ -114,8 +119,13 @@ public class AgendaController implements Serializable {
 
 	public void onEventMove(ScheduleEntryMoveEvent event) {
 		Evento ev = (Evento) event.getScheduleEvent();
-		eventoService.save(ev);
-		eventModel.updateEvent(ev);
+		if(eventoService.findDate(evento.getStartDate(),evento.getEndDate())){
+			eventoService.save(ev);
+			eventModel.updateEvent(ev);
+		}
+		else{
+			System.out.println("FALSE");
+		}
 	}
 
 	public void onEventResize(ScheduleEntryResizeEvent event) {
