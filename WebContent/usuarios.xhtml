@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Agendamento</title>
+</h:head>
+
+<h:body>
+	<h3>Usuários cadastrados</h3>
+	
+	<h:form id="formCadastro" prependId="false">
+	
+		<p:growl id="mensagens" showDetail="false" sticky="false" />  
+	
+		<p:dataTable id="tabelaUsuarios" var="usuarios" value="#{usuariosController.listaUsuarios}"
+			selectionMode="single" selection="#{usuariosController.usuariosSelecionado}" rowKey="#{usuarios.id}">
+		    <p:column headerText="Id">
+		        <h:outputText value="#{usuarios.id}" />
+		    </p:column>
+		 
+	    	<p:column headerText="Nome">
+	        	<h:outputText value="#{usuarios.nome}" />
+	    	</p:column>
+	    			    <p:column headerText="Login">
+		        <h:outputText value="#{usuarios.login}" />
+		    </p:column>
+		 
+	    	<p:column headerText="Senha">
+	        	<h:outputText value="#{usuarios.senha}" />
+	    	</p:column>
+	    	 <f:facet name="footer">
+	            <p:commandButton process="tabelaUsuarios" update="formCadastro" 
+	            	icon="ui-icon-pencil" value="Editar" actionListener="#{usuariosController.preparaAtualizar}" />
+            	<p:commandButton process="tabelaUsuarios" update="formCadastro"
+            	  	icon="ui-icon-trash" value="Remover" actionListener="#{usuariosController.remove}">
+           	  		<p:confirm header="Confirmação" message="Tem certeza?" icon="ui-icon-alert" />
+           	  	</p:commandButton>
+	        </f:facet>
+	    </p:dataTable>
+	
+		<hr/>
+	
+		<h3>Cadastro de Usuários</h3>
+	
+	
+		<h:outputLabel for="id" value="Id: " />
+		<p:inputText id="id" value="#{usuariosController.usuarios.id}" readonly="true" />
+		<br/>
+		<br/>
+	
+		<h:outputLabel for="nome" value="Nome: " />
+		<p:inputText id="nome" value="#{usuariosController.usuarios.nome}" />
+		<br/>
+		<br/>
+		<h:outputLabel for="login" value="Login: " />
+		<p:inputText id="login" value="#{usuariosController.usuarios.login}" />
+		<br/>
+		<br/>
+		<h:outputLabel for="senha" value="Senha: " />
+		<p:inputText id="senha" value="#{usuariosController.usuarios.senha}" />
+		<br/>
+		<br/>
+		<p:commandButton value="#{usuariosController.buttonValue}" actionListener="#{usuariosController.salvar}"
+			update="mensagens tabelaUsuarios" />
+		
+		<p:commandButton value="Limpar" actionListener="#{usuariosController.limpar}" update="mensagens formCadastro" />
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+       		<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	</p:confirmDialog>
+		
+	</h:form>
+
+</h:body>
+
+</html>
