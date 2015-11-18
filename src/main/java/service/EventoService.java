@@ -1,5 +1,6 @@
 package service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -27,11 +28,21 @@ public class EventoService {
 
 	public void save(ScheduleEvent evento) {
 		
-		if (evento.getId() == null)
-			entityManager.persist(evento);
+		Evento e = (Evento) evento;
+		
+		System.out.println("before save");
+		System.out.println("getId:" + e.getId());
+		System.out.println("getIdDb:" + e.getIdDb());
+		
+		if (e.getIdDb() == null)
+			entityManager.persist(e);
 		else {
-			entityManager.merge(evento);
+			entityManager.merge(e);
 		}
+		
+		System.out.println("after save");
+		System.out.println("getId:" + e.getId());
+		System.out.println("getIdDb:" + e.getIdDb());
 		
 		entityManager.flush();
 	}
@@ -46,6 +57,20 @@ public class EventoService {
 	
 	public ScheduleEvent find(Long id) {
 		return entityManager.find(Evento.class, id);
+	}
+
+	public boolean findDate(Date startDate, Date endDate) {
+		Query query = entityManager.createQuery("SELECT e from Evento e WHERE :start BETWEEN e.startDate AND e.endDate");
+		query.setParameter("start", startDate);
+		//query.setParameter("end", endDate);
+		List<Evento> lista = query.getResultList();
+		System.out.println(lista.size());
+		if (lista.size() > 0){
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 	
 
