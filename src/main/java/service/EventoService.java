@@ -1,6 +1,5 @@
 package service;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -33,19 +32,11 @@ public class EventoService {
 		
 		Evento e = (Evento) evento;
 		
-		System.out.println("before save");
-		System.out.println("getId:" + e.getId());
-		System.out.println("getIdDb:" + e.getIdDb());
-		
 		if (e.getIdDb() == null)
 			entityManager.persist(e);
 		else {
 			entityManager.merge(e);
 		}
-		
-		System.out.println("after save");
-		System.out.println("getId:" + e.getId());
-		System.out.println("getIdDb:" + e.getIdDb());
 		
 		entityManager.flush();
 	}
@@ -62,20 +53,23 @@ public class EventoService {
 		return entityManager.find(Evento.class, id);
 	}
 
-	public boolean findDate(Date startDate, Date endDate) {
-
-		Query query = entityManager.createQuery("SELECT e from Evento e WHERE :start BETWEEN e.startDate AND e.endDate");
-		query.setParameter("start", startDate);
-		//query.setParameter("end", endDate);
-		List<Evento> lista = query.getResultList();
-		System.out.println(lista.size());
-		if (lista.size() > 0){
-			return false;
-		}
-		else {
+	@SuppressWarnings("unchecked")
+	public boolean findDate(Evento evento) {
+		
+		Query query = entityManager.createQuery(
+				"SELECT e from Evento e WHERE (:start BETWEEN e.startDate AND e.endDate) OR "
+				+ "(:end BETWEEN e.startDate AND e.endDate) AND e.espacoFisico.id = :id");
+		
+		query.setParameter("start", evento.getStartDate());
+		query.setParameter("end", evento.getEndDate());
+		query.setParameter("id", evento.getEspacoFisico().getId());
+		
+		List<Evento> lista = (List<Evento>) query.getResultList();
+		
+		if (lista.size() > 0)
 			return true;
-		}
+		else
+			return false;
 	}
-	
 
 }

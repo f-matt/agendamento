@@ -12,7 +12,7 @@
 
 <h:body>
 	<h:form>
-    	<p:growl id="messages" showDetail="true" />
+    	<p:growl id="messages" showDetail="false" />
  
     	<h:panelGrid columnClasses="value">
     	
@@ -24,7 +24,8 @@
  
 				<p:ajax event="dateSelect" listener="#{agendaController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
 	            <p:ajax event="eventSelect" listener="#{agendaController.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-	            <p:ajax event="eventMove" listener="#{agendaController.onEventMove}" update="messages" />
+	            <p:ajax event="eventMove" listener="#{agendaController.onEventMove}" 
+	            		oncomplete="PF('myschedule').update()" update="messages" />
 	            <p:ajax event="eventResize" listener="#{agendaController.onEventResize}" update="messages" />
 	 
         	</p:schedule>
@@ -48,9 +49,9 @@
  			
 			<p:commandButton type="reset" value="Limpar" />
            	<p:commandButton id="addButton" value="Salvar" actionListener="#{agendaController.addEvent}" 
-           		oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+           		update="messages" oncomplete="PF('eventDialog').hide();" />
            	<p:commandButton id="removeButton" value="Apagar" actionListener="#{agendaController.removeEvent}"
-           		oncomplete="PF('myschedule').update();PF('eventDialog').hide();">
+           		oncomplete="PF('eventDialog').hide();">
            		<p:confirm header="Confirmação" message="Deseja realmente excluir este evento?" icon="ui-icon-alert" />
            	</p:commandButton>
             	

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import model.EspacoFisico;
 import model.Evento;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -87,26 +88,35 @@ public class AgendaController implements Serializable {
 	}
 
 	public void addEvent(ActionEvent actionEvent) {	
-		if(eventoService.findDate(evento.getStartDate(),evento.getEndDate())){
+		if(!eventoService.findDate((Evento) evento)){
 			if (evento.getId() == null) {
 				eventModel.addEvent(evento);
 				eventoService.save(evento);
 				FacesContext.getCurrentInstance().addMessage(null, 
-						new FacesMessage(FacesMessage.SEVERITY_INFO, null, "Evento salvo com sucesso!"));
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento salvo com sucesso!", null));
 			} else {
 				eventModel.updateEvent(evento);
 				eventoService.save(evento);
+				FacesContext.getCurrentInstance().addMessage(null, 
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento atualizado com sucesso!", null));
 			}
+
+			// Atualiza a agenda no frontend
+			RequestContext.getCurrentInstance().execute("PF('myschedule').update()");
 			evento = new Evento(espacoFisico);
-		}
-		else{
-			System.out.println("FALSE");
+			
+		} else{
+			FacesContext.getCurrentInstance().addMessage(null, 
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Horário indisponível!", null));
 		}
 	}
 	
 	public void removeEvent() {
 		eventModel.deleteEvent(evento);
 		eventoService.remove(evento);
+		
+		// Atualiza a agenda no frontend
+		RequestContext.getCurrentInstance().execute("PF('myschedule').update()");
 	}
 
 	public void onEventSelect(SelectEvent selectEvent) {
@@ -119,12 +129,22 @@ public class AgendaController implements Serializable {
 
 	public void onEventMove(ScheduleEntryMoveEvent event) {
 		Evento ev = (Evento) event.getScheduleEvent();
-		if(eventoService.findDate(evento.getStartDate(),evento.getEndDate())){
+		
+		if(!eventoService.findDate(ev)) {
 			eventoService.save(ev);
 			eventModel.updateEvent(ev);
-		}
-		else{
-			System.out.println("FALSE");
+		} else {
+			
+			FacesContext.getCurrentInstance().addMessage(null, 
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Horário indisponível!", null));
+			
+			// Cria o modelo de eventos
+			eventModel.clear();
+			List<ScheduleEvent> listaEventos = eventoService.getAll(espacoFisico);
+
+			for (ScheduleEvent se : listaEventos) {
+				eventModel.addEvent(se);
+			}
 		}
 	}
 
